@@ -1,0 +1,107 @@
+---
+title: "Playbill"
+author: "Sirpreet Padda"
+date: "2/19/2021"
+output: html_document
+---
+---
+title: "STAT 632 "
+author: "Sirpreet Padda"
+date: "1/31/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+# Problem 1:
+## (a)
+## Use read.csv( ) to load the playbill.csv data file into R. Draw a scatterplot of the data and add your fitted regression line.
+```{r}
+# Load the data file in R.
+playbill <- library(readr)
+playbill_1_ <- read_csv("~/Downloads/playbill (1).csv")
+View(playbill_1_)
+
+# Initializing x and y variables.
+x <- playbill_1_$LastWeek # the predictor
+y <- playbill_1_$CurrentWeek # the response variable
+
+# Regression line
+lm(y ~ x)
+fit1 <- lm(y ~ x)
+plot(y ~ x, data = playbill_1_, xlab = 'Last week', ylab ='Current week', cex = 0.9)
+title("The Regression of current week on the last week")
+abline(fit1, col = "cyan")
+summary(fit1)
+```
+As we can clearly see the value of (R^2 = 0.9966) which is almost close to 1 which indicates that the data fits to the regression model.
+
+# (b)
+## Compute a 95% confidence interval for the slope of the regression model.
+```{r}
+# Computing a 95% confidence interval for the slope of the regression model, B1.
+confint(fit1, level = 0.95)
+```
+Yes, 1 is  a plausible value for B1 (slope) because it is included in the 95% confidence interval(9.514971e-01 ,1.012666).
+
+# (c)
+## Use the fitted regression model to estimate the gross box office results for the current week (in $) for a production with $400000 in gross box office the previous week.
+```{r}
+x_new <- data.frame(x = 400000)
+predict(fit1, newdata = x_new, interval = "prediction")
+```
+The predicted value for the gross box office results for the current week (in dollar) for a production with 400000 (in dollar) in gross box office the previous week is $399637.5 Also, we are 95% confident that true value is between 359832.8 and 439442.2. No, 450,000 (in dollar) is not a feasible value for the gross box office results in the current week because it is not included in the confidence interval.Also, the upper bound is 439442.2 which is smaller than 450,000.
+
+# (d)
+No, some promoters of broadway use the wrong prediction rule that next week's gross box office results will be equal to the current week's gross box office results because the current week's gross box office result will be greater or smaller than the results of the next week gross box office result.
+
+
+## Problem 2:
+# (a)
+## Fit the regression of the response on the predictor. Draw a scatterplot of the data and add your fitted regression line. 
+```{r}
+# Load the package
+library(alr4)
+x <- Heights$dheight # the predictor
+y <- Heights$mheight # the response
+
+## (a)
+# Fit the Regression line of the response on the predictor. Draw a scatterplot of the data.
+lm(y ~ x)
+fit <- lm(y ~ x)
+plot(y ~ x, data = Heights, xlab = 'Daughters height (in inches.)', ylab ='Mothers height (in inches.) ', cex = 0.9)
+title("The Regression line of the response on the predictor")
+abline(fit, col = "red")
+summary(fit)
+```
+
+# (b)
+## Obtain an estimated mean of daughters' height and 99% confidence interval for daughters whose mother is 60 inches tall.
+```{r}
+ new_x <- data.frame(x = 60) # Mothers height = 60 (inches)
+ci <- predict(fit, newdata = new_x, interval = "confidence");ci
+```
+The estimated mean height is 60.78553 cubic inches for daughter whose mothers is 60 inches tall. We are 99% confident that the true mean height, for daughter whose mother is 60 inches tall is between 60.59485 and 60.97621.
+
+```{r}
+# Use a ggplot2 package
+library(ggplot2)
+ggplot(Heights, aes(dheight,mheight))+ geom_point() + stat_smooth(method = lm, se = TRUE) 
+```
+
+# (c)
+## Obtain a predicted value and 99% prediction interval for a daughter whose mother is 60 inches tall.
+
+```{r}
+ new_x <- data.frame(x = 60) # Mothers height = 60
+pi <- predict(fit, newdata = new_x, interval = "prediction");pi
+```
+The predicted height for a daughter whose mother is 60 inches tall is 60.78553 cubic inches. We are 99% confident for daughter whose mothers actual height is between 56.75405 and 64.81701.
+
+# (d)
+## Interpret the coefficient of determination (R^2).
+Generally, higher the R-squared indicates a better fit to the model. Thus, R-squared is a number between 0 and 1. The closer R-squared to 1, the better the linear regression model fits to the data. In this model, R-squared value is 0.2408 which is between 0 and 1. Hence, the data fits to the regression model.
+
+
+
+
+
